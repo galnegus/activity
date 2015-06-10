@@ -5,9 +5,12 @@
   "main": "index.js",
   "dependencies": {
     "interpolation": "^1.0.0",
-    "jsantell-interpolate-color": "^0.0.2"
+    "jsantell-interpolate-color": "npmcomponent/jsantell-interpolate-color"
   },
   "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "repository": {
     "type": "git",
     "url": "https://galnegus@bitbucket.org/galnegus/activity.git"
