@@ -1,0 +1,17 @@
+{
+  "name": "activity",
+  "version": "0.0.1",
+  "description": "makes your tough choices for you!",
+  "main": "index.js",
+  "dependencies": {
+    "interpolation": "^1.0.0",
+    "jsantell-interpolate-color": "^0.0.2"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://galnegus@bitbucket.org/galnegus/activity.git"
+  },
+  "author": "galnegus",
+  "license": "ISC"
+}

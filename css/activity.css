@@ -1,0 +1,126 @@
+body, html {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: 'Lucida Console', 'Lucida Sans Typewriter', monaco, 'Bitstream Vera Sans Mono', monospace;
+}
+body {
+	/*background: #F6FFEB;*/
+	background: #111;
+	text-align: center;
+}
+.wrap {
+	min-height: 100%;
+}
+
+.main {
+	overflow: auto;
+	padding-bottom: 100px;
+}
+
+.textspin {
+	margin: 100px auto;
+	position: relative;
+	width: 1000px;
+	height: 100px;
+}
+.textspin span {
+	position: absolute;
+
+	color: #FFCC00;
+	text-shadow: #FFCC00 0px 0px 70px;
+	font-size: 36px;
+	font-weight: bold;
+	cursor: default;
+
+	/* middle
+	color: #FF7C00;
+	text-shadow: #FF7C00 0px 0px 70px;
+	 */
+
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+#stop {
+	display: inline-block;
+	height: 60px;
+	margin: 0 auto;
+	padding: 30px;
+	text-align: center;
+	color: #111;
+	background: #FF3C00;
+	border: 15px #FF3C00 solid;
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+	border-radius: 15px;
+	font-size: 48px;
+	font-weight: bold;
+	cursor: default;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+#update {
+	display: table;
+	position: relative;
+	margin-top: -100px;
+	height: 90px;
+	width: 100%;
+	clear: both;
+	background: #000;
+	border-top: 10px #000 solid;
+	color: #333;
+}
+#leftBox, #rightBox {
+	display: table-cell;
+}
+#rightBox {
+	width: 440px;
+}
+#updateText {
+	width: 100%;
+	height: 70px;
+	float: left;
+	padding: 10px;
+	margin: 0px;
+	font-size: 32px;
+	border: none;
+}
+#updateSubmit, #cookieDebug {
+	height: 100%;
+	float: right;
+	width: 200px;
+	margin: 0px;
+	line-height: 20px;
+	display: table;
+	background: #ddd;
+	font-weight: bold;
+}
+#updateSubmit {
+	border-left: 10px #111 solid;
+}
+#cookieDebug {
+	border-left: 10px #111 solid;
+}
+#updateSubmit p, #cookieDebug p {
+	display: table-cell;
+	vertical-align: middle;
+	margin: 0;
+	padding: 0;
+	font-size: 32px;
+	cursor: default;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}

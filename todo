@@ -1,0 +1,5 @@
+- gör knappen för att starta/stanna
+- gör så att spinnern kan bromsa och slutligen stanna på en SpinningText
+- cookies
+- optimering: gör så att interpolationsvärden i SpinningText.update() beräknas innan programmet körs, så att det går snabbare.
+	+ ha en laddningsskräm medans tabellerna beräknas
