@@ -1,3 +1,4 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -9,9 +10,11 @@
 			height: 100%;
 			margin: 0;
 			padding: 0;
+      font-family: ‘Lucida Console E Monaco, monospace;
 		}
 		body {
-			background: #F6FFEB;
+			/*background: #F6FFEB;*/
+      background: #111;
 			text-align: center;
 		}
 		#wrap {
@@ -29,7 +32,6 @@
 			text-shadow: 0px 0px 70px #FFCC00;
 			font-size: 36px;
 			font-weight: bold;
-			font-family: tahoma;
 			cursor: default;
 			-webkit-touch-callout: none;
 			-webkit-user-select: none;
@@ -62,13 +64,13 @@
 			margin: 0 auto;
 			padding: 30px;
 			text-align: center;
-			color: #FF3C00;
+			color: #111;
+      background: #FF3C00;
 			border: 15px #FF3C00 solid;
 			-moz-border-radius: 15px;
 			-webkit-border-radius: 15px;
 			border-radius: 15px;
 			font-size: 48px;
-			font-family: tahoma;
 			font-weight: bold;
 			cursor: default;
 			-webkit-touch-callout: none;
@@ -85,14 +87,12 @@
 			height: 90px;
 			width: 100%;
 			clear: both;
-			background: #fff;
+			background: #000;
 			border-top: 10px #000 solid;
+			color: #333;
 		}
 		#leftBox, #rightBox {
 			display: table-cell;
-		}
-		#leftBox {
-
 		}
 		#rightBox {
 			width: 440px;
@@ -103,7 +103,7 @@
 			float: left;
 			padding: 10px;
 			margin: 0px;
-			font: 32px tahoma;
+			font-size: 32px;
 			border: none;
 		}
 		#updateSubmit, #cookieDebug {
@@ -113,20 +113,21 @@
 			margin: 0px;
 			line-height: 20px;
 			display: table;
-			background: #F6FFEB;
+			background: #ddd;
+			font-weight: bold;
 		}
 		#updateSubmit {
-			border-left: 10px #aaa solid;
+			border-left: 10px #111 solid;
 		}
 		#cookieDebug {
-			border-left: 10px #555 solid;
+			border-left: 10px #111 solid;
 		}
 		#updateSubmit p, #cookieDebug p {
 			display: table-cell;
 			vertical-align: middle;
 			margin: 0;
 			padding: 0;
-			font: 32px tahoma;
+			font-size: 32px;
 			cursor: default;
 			-webkit-touch-callout: none;
 			-webkit-user-select: none;
@@ -169,7 +170,7 @@
 		 * 3: spinning down
 		 **/
 		var spinnerState = 0;
-		var activities = ["the aprils", "murr*murr", "audio safari", "capsule", "sexy-synthesizer", "cibo matto"];
+		var activities = ["bleaches", "alchemy", "lone survivor", "hunger games", "the graveyard book"];
 
 		function printActivities(i) {
 			$("#textspin > .left").html(activities[(i - 1) % activities.length]);
