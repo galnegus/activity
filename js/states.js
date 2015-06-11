@@ -1,6 +1,5 @@
 module.exports = {
-    // spinner state
-    STOPPED: 0,
-    SPINNING: 1,
-    STOPPING: 2
+    IDLE: 0,
+    SPIN: 1,
+    STOP: 2
 };

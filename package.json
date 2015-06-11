@@ -5,7 +5,8 @@
   "main": "index.js",
   "dependencies": {
     "interpolation": "^1.0.0",
-    "jsantell-interpolate-color": "npmcomponent/jsantell-interpolate-color"
+    "jsantell-interpolate-color": "npmcomponent/jsantell-interpolate-color",
+    "mediator-js": "^0.9.9"
   },
   "devDependencies": {},
   "scripts": {

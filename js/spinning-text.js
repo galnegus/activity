@@ -6,12 +6,14 @@ module.exports = (function () {
     function SpinningText(text, position) {
         this._text = text || 'null';
         this._position = position || 0;
+        this._previousPosition = 0;
 
         this.$ = $('<span>' + this._text + '</span>');
     }
 
     SpinningText.prototype.update = function(velocity) {
-        this._position = this._position + velocity;
+        this._previousPosition = this._position;
+        this._position = this._position + velocity * Constants.VELOCITY_FACTOR;
         if (this._position > Constants.MAX_POSITION) {
             this._position = Constants.MIN_POSITION + this._position - Constants.MAX_POSITION;
         }
@@ -45,6 +47,13 @@ module.exports = (function () {
 
     SpinningText.prototype.getText = function() {
         return this._text;
+    };
+
+    SpinningText.prototype.winningPosition = function() {
+        if (this._previousPosition < Constants.MIDDLE_POSITION && this._position >= Constants.MIDDLE_POSITION) {
+            return true;
+        }
+        return false;
     };
 
     return SpinningText;
