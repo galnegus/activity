@@ -1,6 +1,6 @@
 module.exports = {
 	FPS: 30,
-	VELOCITY_FACTOR: 5,
+	LOOPS_PER_SECOND: 2,
 
 	// spinning-text position boundaries
     MIN_POSITION: 0,

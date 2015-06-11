@@ -53,9 +53,9 @@ module.exports = (function() {
 		if (global.activity.state === States.SPIN && instance._velocity <= 1) {
 	 		instance._velocity += instance._velocityStep;
 		} else if (global.activity.state === States.STOP) {
-			if (instance._velocity > 0.1) {
+			if (instance._velocity > 0.3) {
 				instance._velocity -= instance._velocityStep;
-			} else if (instance._winner.winningPosition() && (Math.floor(Math.random() * 2) == 0)) {
+			} else if (instance._winner.winningPosition() && Math.random() < 0.5) {
 				instance._velocity = 0;
 				global.activity.mediator.publish('state', States.IDLE);
 			}

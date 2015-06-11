@@ -13,7 +13,8 @@ module.exports = (function () {
 
     SpinningText.prototype.update = function(velocity) {
         this._previousPosition = this._position;
-        this._position = this._position + velocity * Constants.VELOCITY_FACTOR;
+        var velocityFactor = Constants.LOOPS_PER_SECOND * (Constants.MAX_POSITION - Constants.MIN_POSITION) / Constants.FPS;
+        this._position = this._position + velocity * velocityFactor;
         if (this._position > Constants.MAX_POSITION) {
             this._position = Constants.MIN_POSITION + this._position - Constants.MAX_POSITION;
         }
