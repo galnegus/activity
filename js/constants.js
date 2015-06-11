@@ -1,6 +1,13 @@
 module.exports = {
+    // how often the spinner updates
 	FPS: 30,
+
+    // how fast the spinner spins
 	LOOPS_PER_SECOND: 2,
+
+    // accelration/decelartion time (in approxemate seconds)
+    ACCELERATION_TIME: 2,
+    DECELERATION_TIME: 10,
 
 	// spinning-text position boundaries
     MIN_POSITION: 0,

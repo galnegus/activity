@@ -6,10 +6,12 @@ module.exports = (function() {
 		this._spinningTexts = spinningTextArray;
 		this._loopRunning = false;
 		this._velocity = 0;
-		this._winner = this._spinningTexts[Math.floor(Math.random() * this._spinningTexts.length)];
 
-		var N = 120;
-		this._velocityStep = 1 / N;
+		var seconds = 5;
+
+		// loop/update values
+		this._accelerationStep = 1 / (Constants.ACCELERATION_TIME * Constants.FPS);
+		this._decelerationStep = 1 / (Constants.DECELERATION_TIME * Constants.FPS);
 		this._delay = 1000 / Constants.FPS;
 
 		// init spinningTexts
@@ -27,6 +29,8 @@ module.exports = (function() {
 					break;
 				case States.SPIN:
 					if (!instance._loopRunning) {
+						instance._newWinner();
+						instance._start = new Date().getTime();
 						instance._loopRunning = true;
 						instance._loop(instance);
 					}
@@ -37,6 +41,10 @@ module.exports = (function() {
 		});
 	}
 
+	Spinner.prototype._newWinner = function() {
+		this._winner = this._spinningTexts[Math.floor(Math.random() * this._spinningTexts.length)];
+	};
+
 	Spinner.prototype._render = function() {
 		this._spinningTexts.forEach(function(spinningText) {
 			spinningText.render();
@@ -44,23 +52,25 @@ module.exports = (function() {
 	};
 
 	Spinner.prototype._update = function() {
+		if (global.activity.state === States.SPIN && this._velocity <= 1) {
+	 		this._velocity += this._accelerationStep;
+		} else if (global.activity.state === States.STOP) {
+			if (this._velocity > 0.1) {
+				this._velocity -= this._decelerationStep;
+			} 
+
+			if (this._velocity < 0.2 && this._winner.winningPosition() && Math.random() < 0.75) {
+				this._velocity = 0;
+				global.activity.mediator.publish('state', States.IDLE);
+			}
+		}
+
 		this._spinningTexts.forEach(function(spinningText) {
 			spinningText.update(this._velocity);
 		}.bind(this));
 	};
 
 	Spinner.prototype._loop = function(instance) {
-		if (global.activity.state === States.SPIN && instance._velocity <= 1) {
-	 		instance._velocity += instance._velocityStep;
-		} else if (global.activity.state === States.STOP) {
-			if (instance._velocity > 0.3) {
-				instance._velocity -= instance._velocityStep;
-			} else if (instance._winner.winningPosition() && Math.random() < 0.5) {
-				instance._velocity = 0;
-				global.activity.mediator.publish('state', States.IDLE);
-			}
-		}
-
 		instance._update();
 		instance._render();
 
