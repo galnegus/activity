@@ -2,18 +2,17 @@
 var SpinningText = require('./spinning-text');
 var Constants = require('./constants');
 var Spinner = require('./spinner');
-
-var myObject = new SpinningText('awd');
-myObject.update();
-
-var spagalloo = new Spinner([
-	new SpinningText('snusk', 0),
-	new SpinningText('pervo', 33),
-	new SpinningText('fyfan', 66)
-], $('#spinaroo'));
-
+var SpinButton = require('./spin-button');
 
 $(document).ready(function() {
+	var spinner = new Spinner([
+		new SpinningText('snusk', 0),
+		new SpinningText('pervo', 33),
+		new SpinningText('fyfan', 66)
+	], $('#spinaroo'));
+
+	var spinButton = new SpinButton(spinner, $("#stop"));
+
 	if($.cookie('activity') !== null) {
 		//activities = $.cookie('activity').split(/\s*,\s*/);
 	}
@@ -21,10 +20,6 @@ $(document).ready(function() {
 	$("#stop").html("start");
 });
 
-$("#stop").click(function() {
-	spagalloo.start();
-
-});
 $("#updateSubmit").click(function() {
 	$.cookie('activity', $('#updateText').val().toString());
 	location.reload();
@@ -33,7 +28,7 @@ $("#cookieDebug").click(function() {
 	$.cookie('activity', null);
 	location.reload();
 });
-},{"./constants":2,"./spinner":3,"./spinning-text":4}],2:[function(require,module,exports){
+},{"./constants":2,"./spin-button":3,"./spinner":4,"./spinning-text":5}],2:[function(require,module,exports){
 module.exports = {
 	FPS: 60,
 
@@ -49,6 +44,34 @@ module.exports = {
 
 },{}],3:[function(require,module,exports){
 var States = require('./states');
+
+module.exports = (function() {
+	function SpinButton(spinner, $button) {
+		this._spinner = spinner;
+
+		var instance = this;
+		$button.on('click', function() {
+			switch (instance._spinner.getState()) {
+				case States.STOPPED:
+					spinner.start();
+					break;
+				case States.SPINNING:
+					spinner.stop();
+					break;
+				case States.STOPPING:
+					//
+					break;
+			}
+
+			
+		});
+	}
+
+	return SpinButton;
+})();
+
+},{"./states":6}],4:[function(require,module,exports){
+var States = require('./states');
 var Constants = require('./constants');
 
 module.exports = (function() {
@@ -56,6 +79,10 @@ module.exports = (function() {
 		this._spinningTexts = spinningTextArray;
 		this._state = States.STOPPED;
 		this._velocity = 0;
+
+		var N = 120;
+		this._velocityStep = 1 / N;
+		this._delay = 1000 / Constants.FPS;
 
 		this._spinningTexts.forEach(function(spinningText) {
 			$container.append(spinningText.$);
@@ -75,30 +102,35 @@ module.exports = (function() {
 		}.bind(this));
 	};
 
+	Spinner.prototype._loop = function(instance) {
+		if (instance._velocity <= 1) {
+	 		instance._velocity += instance._velocityStep;
+		}
+
+		instance._update();
+		instance._render();
+
+		setTimeout(instance._loop, instance._delay, instance);
+	};
+
 	Spinner.prototype.start = function() {
-		var i = 0;
-		var N = 120;
-		var velocityStep = 1 / N;
-		var time = 1000 / Constants.FPS;
+		this._state = Constants.SPINNING;
 
-		var loop = function(that, i) {
-			if (that._velocity <= 1) {
- 		 		that._velocity += velocityStep;
-			}
+		this._loop(this);
+	};
 
-			that._update();
-			that._render();
-			i++;
-			setTimeout(loop, time, that, i);
-		};
+	Spinner.prototype.stop = function() {
+		this._state = States.STOPPING;
+	};
 
-		loop(this, i);
+	Spinner.prototype.getState = function() {
+		return this._state;
 	};
 
 	return Spinner;
 })();
 
-},{"./constants":2,"./states":5}],4:[function(require,module,exports){
+},{"./constants":2,"./states":6}],5:[function(require,module,exports){
 var Constants = require('./constants');
 var smoothstep = require('interpolation').smoothstep;
 var interpolateColor = require('jsantell-interpolate-color');
@@ -151,33 +183,32 @@ module.exports = (function () {
     return SpinningText;
 })();
 
-},{"./constants":2,"interpolation":6,"jsantell-interpolate-color":9}],5:[function(require,module,exports){
+},{"./constants":2,"interpolation":7,"jsantell-interpolate-color":10}],6:[function(require,module,exports){
 module.exports = {
     // spinner state
     STOPPED: 0,
-    STARTING: 1,
-    SPINNING: 2,
-    STOPPING: 3
+    SPINNING: 1,
+    STOPPING: 2
 };
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /** Utility function for linear interpolation. */
 module.exports.lerp = require('lerp')
 
 /** Utility function for Hermite interpolation. */
 module.exports.smoothstep = require('smoothstep')
-},{"lerp":7,"smoothstep":8}],7:[function(require,module,exports){
+},{"lerp":8,"smoothstep":9}],8:[function(require,module,exports){
 function lerp(v0, v1, t) {
     return v0*(1-t)+v1*t
 }
 module.exports = lerp
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 module.exports = function smoothstep (min, max, value) {
   var x = Math.max(0, Math.min(1, (value-min)/(max-min)));
   return x*x*(3 - 2*x);
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /**
  * A simple color interpolator.
  * Parses a `from` and `to` HSL string in the format

@@ -7,6 +7,10 @@ module.exports = (function() {
 		this._state = States.STOPPED;
 		this._velocity = 0;
 
+		var N = 120;
+		this._velocityStep = 1 / N;
+		this._delay = 1000 / Constants.FPS;
+
 		this._spinningTexts.forEach(function(spinningText) {
 			$container.append(spinningText.$);
 			spinningText.render();
@@ -25,24 +29,29 @@ module.exports = (function() {
 		}.bind(this));
 	};
 
+	Spinner.prototype._loop = function(instance) {
+		if (instance._velocity <= 1) {
+	 		instance._velocity += instance._velocityStep;
+		}
+
+		instance._update();
+		instance._render();
+
+		setTimeout(instance._loop, instance._delay, instance);
+	};
+
 	Spinner.prototype.start = function() {
-		var i = 0;
-		var N = 120;
-		var velocityStep = 1 / N;
-		var time = 1000 / Constants.FPS;
+		this._state = Constants.SPINNING;
 
-		var loop = function(that, i) {
-			if (that._velocity <= 1) {
- 		 		that._velocity += velocityStep;
-			}
+		this._loop(this);
+	};
 
-			that._update();
-			that._render();
-			i++;
-			setTimeout(loop, time, that, i);
-		};
+	Spinner.prototype.stop = function() {
+		this._state = States.STOPPING;
+	};
 
-		loop(this, i);
+	Spinner.prototype.getState = function() {
+		return this._state;
 	};
 
 	return Spinner;

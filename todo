@@ -1,4 +1,5 @@
 - gör knappen för att starta/stanna
+	+ mediator vs observer http://jonathancreamer.com/javascript-patterns-mediator-vs-observer/
 - gör så att spinnern kan bromsa och slutligen stanna på en SpinningText
 - cookies
 - optimering: gör så att interpolationsvärden i SpinningText.update() beräknas innan programmet körs, så att det går snabbare.
