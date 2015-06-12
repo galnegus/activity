@@ -1,6 +1,8 @@
 var Constants = require('./constants');
-var smoothstep = require('interpolation').smoothstep;
 var interpolateColor = require('jsantell-interpolate-color');
+var Helpers = require('./spinning-text-helpers');
+var SpinningTextLookup = require('./spinning-text-lookup');
+var States = require('./states');
 
 module.exports = (function () {
     function SpinningText(text, position) {
@@ -8,38 +10,53 @@ module.exports = (function () {
         this._position = position || 0;
         this._previousPosition = 0;
 
-        this.$ = $('<span>' + this._text + '</span>');
+        this._$ = $('<span>' + this._text + '</span>');
+
+        this._lookup = new SpinningTextLookup(1000, this._$.css('text-shadow'), this._$.width());
     }
 
-    SpinningText.prototype.update = function(velocity) {
+    SpinningText.prototype.appendTo = function($container) {
+        $container.append(this._$);
+    };
+
+    SpinningText.prototype.update = function(velocity, dt) {
         this._previousPosition = this._position;
-        var velocityFactor = Constants.LOOPS_PER_SECOND * (Constants.MAX_POSITION - Constants.MIN_POSITION) / Constants.FPS;
+        var velocityFactor = Constants.LOOPS_PER_SECOND * (Constants.MAX_POSITION - Constants.MIN_POSITION) * (dt / 1000);
         this._position = this._position + velocity * velocityFactor;
         if (this._position > Constants.MAX_POSITION) {
             this._position = Constants.MIN_POSITION + this._position - Constants.MAX_POSITION;
         }
     };
 
-    SpinningText.prototype.render = function() {
-        var normalizedToCenter = 1 - Math.abs(this._position - Constants.MAX_POSITION / 2) / (Constants.MAX_POSITION / 2);
-        var smoothstepped = smoothstep(0, 1, normalizedToCenter);
+    SpinningText.prototype.renderOld = function() {
+        var normalizedPosition = Helpers.normalizedPosition(this._position);
+        var color = interpolateColor(Constants.FROM_COLOR, Constants.TO_COLOR, normalizedPosition);
 
         // size
-        this.$.css('font-size', (16 + smoothstepped * 32) + 'pt');
+        this._$.css('font-size', Helpers.fontSize(normalizedPosition));
 
         // color
-        var color = interpolateColor(Constants.FROM_COLOR, Constants.TO_COLOR, smoothstepped);
-        this.$.css('color', color);
+        this._$.css('color', color);
 
         // shadow (color)
-        var textShadow = this.$.css('text-shadow').replace(/rgba?\([^\)]+\)/, color);
-        this.$.css('text-shadow', textShadow);
+        this._$.css('text-shadow', Helpers.textShadow(this._$.css('text-shadow'), color));
 
         // opacity
-        this.$.css('opacity', smoothstepped);
+        this._$.css('opacity', normalizedPosition);
 
         // position
-        this.$.css('right', this._position * Constants.STEP - this.$.width() / 2);
+        this._$.css('right', Helpers.right(this._position, this._$.width()));
+    };
+
+    SpinningText.prototype.render = function() {
+        this._$.css({
+            'font-size': this._lookup.fontSize(this._position),
+            'color': this._lookup.color(this._position),
+            'text-shadow': this._lookup.textShadow(this._position),
+            'opacity': this._lookup.normalizedPosition(this._position)
+        });
+        // width varies with font-size, why this is done seperately
+        this._$.css('right', this._lookup.right(this._position) - this._$.width() / 2);
     };
 
     SpinningText.prototype.getPosition = function() {

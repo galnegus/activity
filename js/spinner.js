@@ -17,7 +17,7 @@ module.exports = (function() {
 
 		// init spinningTexts
 		this._spinningTexts.forEach(function(spinningText) {
-			$container.append(spinningText.$);
+			spinningText.appendTo($container);
 			spinningText.render();
 		});
 
@@ -31,8 +31,8 @@ module.exports = (function() {
 				case States.SPIN:
 					if (!instance._loopRunning) {
 						instance._newWinner();
-						instance._start = new Date().getTime();
 						instance._loopRunning = true;
+						instance._time = typeof window !== 'undefined' && window.performance !== undefined && window.performance.now !== undefined ? window.performance.now() : Date.now();
 						instance._loop(instance);
 					}
 					break;
@@ -52,19 +52,19 @@ module.exports = (function() {
 		}.bind(this));
 	};
 
-	Spinner.prototype._update = function() {
+	Spinner.prototype._update = function(dt) {
 		if (global.activity.state === States.SPIN && this._velocity <= 1) {
 	 		this._velocity += this._accelerationStep;
 		} else if (global.activity.state === States.STOP) {
-			if (this._velocity > 0.1) {
+			if (this._velocity > 0.05) {
 				this._velocity -= this._decelerationStep;
 			} 
 
-			if (this._velocity < 0.2 && this._winner.winningPosition() && Math.random() < 0.75) {
+			if (this._velocity < 0.4 && this._winner.winningPosition() && Math.random() < 0.9) {
 				if (typeof this._tween === 'undefined') {
 					var instance = this;
 					this._tween = new TWEEN.Tween({x: instance._winner.getPosition()})
-		            .to({x: [53, 50]}, 50 / instance._velocity)
+		            .to({x: [50 + this._velocity * Constants.LOOPS_PER_SECOND * 20, instance._winner.getPosition()]}, Constants.LOOPS_PER_SECOND * 500)
 		            .easing(TWEEN.Easing.Back.Out)
 		            .onUpdate(function () {
 		            	instance._winner._position = this.x;
@@ -81,7 +81,7 @@ module.exports = (function() {
 
 		if (typeof this._tween === 'undefined') {
 			this._spinningTexts.forEach(function(spinningText) {
-				spinningText.update(this._velocity);
+				spinningText.update(this._velocity, dt);
 			}.bind(this));
 		} else {
 			TWEEN.update();
@@ -90,11 +90,23 @@ module.exports = (function() {
 	};
 
 	Spinner.prototype._loop = function(instance) {
-		instance._update();
+		// get delta time
+		var time = typeof window !== 'undefined' && window.performance !== undefined && window.performance.now !== undefined ? window.performance.now() : Date.now();
+		dt = (time - instance._time);
+
+		instance._update(dt);
 		instance._render();
 
+		// store time for next loop
+		instance._time = typeof window !== 'undefined' && window.performance !== undefined && window.performance.now !== undefined ? window.performance.now() : Date.now();
+		
+		// adjust delay based on execution time of loop
+		var delay = instance._delay - (instance._time - time);
+		delay = delay < 0 ? 0 : delay;
+
+		// loop!
 		if (global.activity.state !== States.IDLE) {
-			setTimeout(instance._loop, instance._delay, instance);
+			setTimeout(instance._loop, delay, instance);
 		}
 	};
 

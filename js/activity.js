@@ -5,6 +5,7 @@ var States = require('./states');
 var Spinner = require('./spinner');
 var SpinButton = require('./spin-button');
 var Mediator = require("mediator-js").Mediator;
+var Bar = require('loading-bar');
 
 // globals
 global.activity = {};
@@ -12,6 +13,7 @@ global.activity.mediator = new Mediator();
 global.activity.mediator.subscribe('state', function(state) {
 	global.activity.state = state;
 });
+
 
 $(document).ready(function() {
 	var spinner = new Spinner([
@@ -27,6 +29,9 @@ $(document).ready(function() {
 	if($.cookie('activity') !== null) {
 		//activities = $.cookie('activity').split(/\s*,\s*/);
 	}
+
+	var bar = new Bar();
+	//bar.append();
 });
 
 $("#updateSubmit").click(function() {
