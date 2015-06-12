@@ -1,5 +1,6 @@
 var States = require('./states');
 var Constants = require('./constants');
+var TWEEN = require('tween.js');
 
 module.exports = (function() {
 	function Spinner(spinningTextArray, $container) {
@@ -60,14 +61,32 @@ module.exports = (function() {
 			} 
 
 			if (this._velocity < 0.2 && this._winner.winningPosition() && Math.random() < 0.75) {
-				this._velocity = 0;
-				global.activity.mediator.publish('state', States.IDLE);
+				if (typeof this._tween === 'undefined') {
+					var instance = this;
+					this._tween = new TWEEN.Tween({x: instance._winner.getPosition()})
+		            .to({x: [53, 50]}, 50 / instance._velocity)
+		            .easing(TWEEN.Easing.Back.Out)
+		            .onUpdate(function () {
+		            	instance._winner._position = this.x;
+		            })
+		            .onComplete(function() {
+		            	delete instance._tween;
+		        		global.activity.mediator.publish('state', States.IDLE);
+		            })
+		            .start();
+					this._velocity = 0;
+				}
 			}
 		}
 
-		this._spinningTexts.forEach(function(spinningText) {
-			spinningText.update(this._velocity);
-		}.bind(this));
+		if (typeof this._tween === 'undefined') {
+			this._spinningTexts.forEach(function(spinningText) {
+				spinningText.update(this._velocity);
+			}.bind(this));
+		} else {
+			TWEEN.update();
+		}
+		
 	};
 
 	Spinner.prototype._loop = function(instance) {

@@ -6,7 +6,8 @@
   "dependencies": {
     "interpolation": "^1.0.0",
     "jsantell-interpolate-color": "npmcomponent/jsantell-interpolate-color",
-    "mediator-js": "^0.9.9"
+    "mediator-js": "^0.9.9",
+    "tween.js": "^0.14.0"
   },
   "devDependencies": {},
   "scripts": {
