@@ -17,6 +17,7 @@ module.exports = (function () {
 
     SpinningText.prototype.appendTo = function($container) {
         $container.append(this._$);
+        this.render();
     };
 
     SpinningText.prototype.update = function(velocity, dt) {

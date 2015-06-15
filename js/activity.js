@@ -17,9 +17,9 @@ global.activity.mediator.subscribe('state', function(state) {
 
 $(document).ready(function() {
 	var spinner = new Spinner([
-		new SpinningText('lorem', 50),
-		new SpinningText('ipsum', 83),
-		new SpinningText('hipp', 17)
+		'lorem',
+		'ipsum',
+		'hipp'
 	], $('#spinaroo'));
 
 	var spinButton = new SpinButton(spinner, $("#stop"));

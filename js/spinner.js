@@ -1,28 +1,28 @@
 var States = require('./states');
+var SpinningText = require('./spinning-text');
 var Constants = require('./constants');
 var TWEEN = require('tween.js');
 
 module.exports = (function() {
-	function Spinner(spinningTextArray, $container) {
-		this._spinningTexts = spinningTextArray;
-		this._loopRunning = false;
-		this._velocity = 0;
+	function Spinner(texts, $container) {
+		var instance = this; // booo
 
-		var seconds = 5;
+		// init the texts
+		this._spinningTexts = [];
+		texts.forEach(function(text, i) {
+			var spinningText = new SpinningText(text, (50 + i * (100 / texts.length)) % 100);
+			instance._spinningTexts.push(spinningText);
+			spinningText.appendTo($container);
+		});
 
 		// loop/update values
+		this._loopRunning = false;
+		this._velocity = 0;
 		this._accelerationStep = 1 / (Constants.ACCELERATION_TIME * Constants.FPS);
 		this._decelerationStep = 1 / (Constants.DECELERATION_TIME * Constants.FPS);
 		this._delay = 1000 / Constants.FPS;
 
-		// init spinningTexts
-		this._spinningTexts.forEach(function(spinningText) {
-			spinningText.appendTo($container);
-			spinningText.render();
-		});
-
 		// register mediator subscription
-		var instance = this;
 		global.activity.mediator.subscribe('state', function(state) {
 			switch (state) {
 				case States.IDLE:
