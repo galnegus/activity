@@ -7,13 +7,10 @@ module.exports = (function() {
 	function Spinner(texts, $container) {
 		var instance = this; // booo
 
+		this._$container = $container;
+
 		// init the texts
-		this._spinningTexts = [];
-		texts.forEach(function(text, i) {
-			var spinningText = new SpinningText(text, (50 + i * (100 / texts.length)) % 100);
-			instance._spinningTexts.push(spinningText);
-			spinningText.appendTo($container);
-		});
+		this.newTexts(texts);
 
 		// loop/update values
 		this._loopRunning = false;
@@ -42,6 +39,18 @@ module.exports = (function() {
 		});
 	}
 
+	Spinner.prototype.newTexts = function(texts) {
+		var instance = this;
+
+		this._$container.html('');
+		this._spinningTexts = [];
+		texts.forEach(function(text, i) {
+			var spinningText = new SpinningText(text, (Constants.MIDDLE_POSITION + i * (Constants.MAX_POSITION / texts.length)) % Constants.MAX_POSITION);
+			instance._spinningTexts.push(spinningText);
+			spinningText.appendTo(instance._$container);
+		});
+	};
+
 	Spinner.prototype._newWinner = function() {
 		this._winner = this._spinningTexts[Math.floor(Math.random() * this._spinningTexts.length)];
 	};
@@ -60,11 +69,11 @@ module.exports = (function() {
 				this._velocity -= this._decelerationStep;
 			} 
 
-			if (this._velocity < 0.4 && this._winner.winningPosition() && Math.random() < 0.9) {
+			if (this._velocity < 0.4 && this._winner.winningPosition() && Math.random() < 0.99) {
 				if (typeof this._tween === 'undefined') {
 					var instance = this;
 					this._tween = new TWEEN.Tween({x: instance._winner.getPosition()})
-		            .to({x: [50 + this._velocity * Constants.LOOPS_PER_SECOND * 20, instance._winner.getPosition()]}, Constants.LOOPS_PER_SECOND * 500)
+		            .to({x: [Constants.MIDDLE_POSITION + this._velocity * Constants.LOOPS_PER_SECOND * 20, instance._winner.getPosition()]}, Constants.LOOPS_PER_SECOND * 500)
 		            .easing(TWEEN.Easing.Back.Out)
 		            .onUpdate(function () {
 		            	instance._winner._position = this.x;

@@ -17,9 +17,10 @@ global.activity.mediator.subscribe('state', function(state) {
 
 $(document).ready(function() {
 	var spinner = new Spinner([
-		'lorem',
-		'ipsum',
-		'hipp'
+		'ett',
+		'två',
+		'tre',
+		'fyra'
 	], $('#spinaroo'));
 
 	var spinButton = new SpinButton(spinner, $("#stop"));
@@ -27,18 +28,20 @@ $(document).ready(function() {
 	global.activity.mediator.publish('state', States.IDLE);
 
 	if($.cookie('activity') !== null) {
-		//activities = $.cookie('activity').split(/\s*,\s*/);
+		var activities = $.cookie('activity').split(/\s*,\s*/);
+		spinner.newTexts(activities);
+		$("#updateText").val(activities.join(', '));
 	}
 
 	var bar = new Bar();
 	//bar.append();
 });
 
-$("#updateSubmit").click(function() {
+$("#updateSubmit").on('click', function() {
 	$.cookie('activity', $('#updateText').val().toString());
 	location.reload();
 });
-$("#cookieDebug").click(function() {
+$("#cookieDebug").on('click', function() {
 	$.cookie('activity', null);
 	location.reload();
 });

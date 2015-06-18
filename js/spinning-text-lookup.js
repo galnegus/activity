@@ -4,18 +4,24 @@ var Helpers = require('./spinning-text-helpers');
 
 module.exports = (function () {
     function SpinningTextLookup(granularity, textShadowCss) {
-        this._granularity = granularity || 100;
+        this._granularity = granularity || Constants.MAX_POSITION;
         this._ratio = (Constants.MAX_POSITION - Constants.MIN_POSITION) / this._granularity;
 
         var i, pos;
 
+        // makes sure that the middle positioning is always included in the lookups
+        var startPos;
+        for (startPos = 0; startPos < Constants.MIDDLE_POSITION; startPos += this._ratio);
+        startPos = startPos % Constants.MIDDLE_POSITION;
+
+        // create the lookup arrays
         this._normalizedPosition = [];
         this._color = [];
         this._fontSize = [];
         this._textShadow = [];
         this._right = [];
         for (i = 0; i < this._granularity; i++) {
-            pos = i * this._ratio;
+            pos = startPos + i * this._ratio;
     		this._normalizedPosition.push(Helpers.normalizedPosition(i * this._ratio));
             this._color.push(interpolateColor(Constants.FROM_COLOR, Constants.TO_COLOR, this._normalizedPosition[i]));
             this._fontSize.push(Helpers.fontSize(this._normalizedPosition[i]));
