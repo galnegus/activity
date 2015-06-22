@@ -17,6 +17,4 @@ module.exports = {
     right: function(position) {
         return position * Constants.STEP;
     }
-
-
 };

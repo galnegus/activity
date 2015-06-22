@@ -2,7 +2,6 @@ var Constants = require('./constants');
 var interpolateColor = require('jsantell-interpolate-color');
 var Helpers = require('./spinning-text-helpers');
 var SpinningTextLookup = require('./spinning-text-lookup');
-var States = require('./states');
 
 module.exports = (function () {
     function SpinningText(text, position) {

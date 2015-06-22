@@ -1,11 +1,8 @@
 // class modules
-var SpinningText = require('./spinning-text');
-var Constants = require('./constants');
 var States = require('./states');
 var Spinner = require('./spinner');
 var SpinButton = require('./spin-button');
 var Mediator = require("mediator-js").Mediator;
-var Bar = require('loading-bar');
 
 // globals
 global.activity = {};
@@ -23,7 +20,7 @@ $(document).ready(function() {
 		'fyra'
 	], $('#spinaroo'));
 
-	var spinButton = new SpinButton(spinner, $("#stop"));
+	new SpinButton(spinner, $("#stop"));
 
 	global.activity.mediator.publish('state', States.IDLE);
 
@@ -32,9 +29,6 @@ $(document).ready(function() {
 		spinner.newTexts(activities);
 		$("#updateText").val(activities.join(', '));
 	}
-
-	var bar = new Bar();
-	//bar.append();
 });
 
 $("#updateSubmit").on('click', function() {

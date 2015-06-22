@@ -5,7 +5,7 @@ module.exports = {
     // how fast the spinner spins (max velocity)
 	LOOPS_PER_SECOND: 2,
 
-    // acceleration/deceleration time (in approxemate seconds)
+    // acceleration/deceleration time (in approximate seconds)
     ACCELERATION_TIME: 2,
     DECELERATION_TIME: 5,
 

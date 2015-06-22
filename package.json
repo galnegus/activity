@@ -6,11 +6,17 @@
   "dependencies": {
     "interpolation": "^1.0.0",
     "jsantell-interpolate-color": "npmcomponent/jsantell-interpolate-color",
-    "loading-bar": "0.0.2",
     "mediator-js": "^0.9.9",
     "tween.js": "^0.14.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "browserify": "^10.2.4",
+    "gulp": "^3.9.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.2.0",
+    "run-sequence": "^1.1.1",
+    "vinyl-source-stream": "^1.1.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -25,6 +25,6 @@
 				<div id="updateSubmit"><p>update</p></div>
 			</div>
 		</div>
-		<script type="text/javascript" src="js/bundled.js"></script>
+		<script type="text/javascript" src="dist/js/activity.min.js"></script>
 	</body>
 </html>

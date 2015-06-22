@@ -72,6 +72,8 @@ module.exports = (function() {
 			if (this._velocity < 0.4 && this._winner.winningPosition() && Math.random() < 0.99) {
 				if (typeof this._tween === 'undefined') {
 					var instance = this;
+
+					// stopping animation
 					this._tween = new TWEEN.Tween({x: instance._winner.getPosition()})
 		            .to({x: [Constants.MIDDLE_POSITION + this._velocity * Constants.LOOPS_PER_SECOND * 20, instance._winner.getPosition()]}, Constants.LOOPS_PER_SECOND * 500)
 		            .easing(TWEEN.Easing.Back.Out)
@@ -83,6 +85,7 @@ module.exports = (function() {
 		        		global.activity.mediator.publish('state', States.IDLE);
 		            })
 		            .start();
+
 					this._velocity = 0;
 				}
 			}
