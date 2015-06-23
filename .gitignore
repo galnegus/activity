@@ -12,6 +12,5 @@ dist
 # proportion of contributors will probably not be using SublimeText
 # *.sublime-project
 
-
-
+# Stupid crap
 *.DS_STORE

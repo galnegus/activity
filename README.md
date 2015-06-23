@@ -14,7 +14,13 @@ Make sure you have browserify
 
 and use it with
 
-    browserify js/activity.js -o js/bundled.js
+    gulp build
+
+or during continunous development, use
+
+    gulp watch
+
+to automatically build when changes are made to relevant files
 
 ## License
 
