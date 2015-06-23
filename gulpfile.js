@@ -4,6 +4,8 @@ var source = require('vinyl-source-stream');
 var uglify = require('gulp-uglify');
 var rename = require("gulp-rename");
 var runSequence = require('run-sequence');
+var less = require('gulp-less');
+var minifyCSS = require('gulp-minify-css');
 
 gulp.task('browserify', function () {
   var b = browserify('./src/js/activity.js', {debug: true});
@@ -31,6 +33,29 @@ gulp.task('uglify', function() {
     .pipe(gulp.dest('./dist/js'));
 });
 
+gulp.task('less', function() {
+  return gulp.src('./src/less/activity.less')
+    .pipe(less())
+    .pipe(rename('activity.css'))
+    .pipe(gulp.dest('./dist/css'));
+});
+
+gulp.task('minify', ['less'], function() {
+  return gulp.src('./dist/css/activity.css')
+    .pipe(minifyCSS())
+    .pipe(rename('activity.min.css'))
+    .pipe(gulp.dest('./dist/css'));
+});
+
 gulp.task('build', function(done) {
-  return runSequence('browserify', 'uglify', done);
+  return runSequence('browserify', 'uglify', 'minify', done);
+});
+
+gulp.task('watch', function(done){
+  return runSequence('build', function() {
+    gulp.watch('./src/js/*.js', ['build']);
+//    gulp.watch('./client/templates/*.hbs', ['build']);
+    gulp.watch('./src/less/*.less', ['build']);
+    done();
+  });
 });

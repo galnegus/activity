@@ -27,15 +27,15 @@ $(document).ready(function() {
 	if($.cookie('activity') !== null) {
 		var activities = $.cookie('activity').split(/\s*,\s*/);
 		spinner.newTexts(activities);
-		$("#updateText").val(activities.join(', '));
+		$("#update-text").val(activities.join(', '));
 	}
 });
 
-$("#updateSubmit").on('click', function() {
-	$.cookie('activity', $('#updateText').val().toString());
+$("#update-submit").on('click', function() {
+	$.cookie('activity', $('#update-text').val().toString());
 	location.reload();
 });
-$("#cookieDebug").on('click', function() {
+$("#cookie-debug").on('click', function() {
 	$.cookie('activity', null);
 	location.reload();
 });
