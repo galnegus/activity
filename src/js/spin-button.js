@@ -1,5 +1,7 @@
 var States = require('./states');
 
+var $ = require('jquery');
+
 module.exports = (function() {
 	function SpinButton(spinner, $button) {
 		this._spinner = spinner;

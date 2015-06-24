@@ -4,6 +4,13 @@ var Spinner = require('./spinner');
 var SpinButton = require('./spin-button');
 var Mediator = require("mediator-js").Mediator;
 
+// jquery
+var $ = require('jquery');
+require('jquery.cookie');
+
+// templates
+var template = require('../templates/activity.hbs');
+
 // globals
 global.activity = {};
 global.activity.mediator = new Mediator();
@@ -11,8 +18,13 @@ global.activity.mediator.subscribe('state', function(state) {
 	global.activity.state = state;
 });
 
-
 $(document).ready(function() {
+
+	$('body').prepend(template({
+		resetText: 'reset',
+		updateText: 'updates'
+	}));
+
 	var spinner = new Spinner([
 		'ett',
 		'två',
@@ -31,11 +43,11 @@ $(document).ready(function() {
 	}
 });
 
-$("#update-submit").on('click', function() {
+$('body').on('click', '#update-submit', function() {
 	$.cookie('activity', $('#update-text').val().toString());
 	location.reload();
 });
-$("#cookie-debug").on('click', function() {
+$('body').on('click', '#cookie-debug', function() {
 	$.cookie('activity', null);
 	location.reload();
 });

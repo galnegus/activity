@@ -3,6 +3,8 @@ var SpinningText = require('./spinning-text');
 var Constants = require('./constants');
 var TWEEN = require('tween.js');
 
+var $ = require('jquery');
+
 module.exports = (function() {
 	function Spinner(texts, $container) {
 		var instance = this; // booo

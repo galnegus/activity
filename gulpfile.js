@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var browserify = require('browserify');
+var hbsfy = require('hbsfy');
 var source = require('vinyl-source-stream');
 var uglify = require('gulp-uglify');
 var rename = require("gulp-rename");
@@ -9,12 +10,13 @@ var minifyCSS = require('gulp-minify-css');
 
 gulp.task('browserify', function () {
   var b = browserify('./src/js/activity.js', {debug: true});
-  return b.bundle()
+  return b.transform(hbsfy)
+    .bundle()
     .pipe(source('activity.js'))
     .pipe(gulp.dest('./dist/js/'));
 });
 
-gulp.task('uglify', function() {
+gulp.task('uglify', ['browserify'], function() {
   return gulp.src('./dist/js/activity.js')
     .pipe(uglify({
     	mangle: true,
@@ -26,7 +28,7 @@ gulp.task('uglify', function() {
           unused: true,
           if_return: true,
           join_vars: true,
-          drop_console: true
+          drop_console: false
         }
     }))
     .pipe(rename('activity.min.js'))
@@ -48,13 +50,13 @@ gulp.task('minify', ['less'], function() {
 });
 
 gulp.task('build', function(done) {
-  return runSequence('browserify', 'uglify', 'minify', done);
+  return runSequence('uglify', 'minify', done);
 });
 
 gulp.task('watch', function(done){
   return runSequence('build', function() {
     gulp.watch('./src/js/*.js', ['build']);
-//    gulp.watch('./client/templates/*.hbs', ['build']);
+    gulp.watch('./src/templates/*.hbs', ['build']);
     gulp.watch('./src/less/*.less', ['build']);
     done();
   });

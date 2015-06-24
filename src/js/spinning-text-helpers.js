@@ -6,6 +6,10 @@ module.exports = {
         return smoothstep(0, 1, 1 - Math.abs(position - Constants.MAX_POSITION / 2) / (Constants.MAX_POSITION / 2));
     },
 
+    centeredPosition: function(position) {
+        return position - Constants.MIDDLE_POSITION;
+    },
+
     fontSize: function(smoothsteppedPos) {
         return (16 + smoothsteppedPos * 32) + 'pt';
     },
@@ -15,6 +19,6 @@ module.exports = {
     },
 
     right: function(position) {
-        return position * Constants.STEP;
+        return this.centeredPosition(position) * Constants.STEP;
     }
 };

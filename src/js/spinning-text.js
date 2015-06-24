@@ -3,6 +3,8 @@ var interpolateColor = require('jsantell-interpolate-color');
 var Helpers = require('./spinning-text-helpers');
 var SpinningTextLookup = require('./spinning-text-lookup');
 
+var $ = require('jquery');
+
 module.exports = (function () {
     function SpinningText(text, position) {
         this._text = text || 'null';
@@ -57,7 +59,9 @@ module.exports = (function () {
             'z-index': this._lookup.normalizedPosition(this._position)
         });
         // width varies with font-size, why this is done seperately
-        this._$.css('right', this._lookup.right(this._position) - this._$.width() / 2);
+        //this._$.css('right', this._lookup.right(this._position) - this._$.width() / 2);
+        var translate = this._lookup.right(this._position) - this._$.width() / 2;
+        this._$.css({transform: 'translateX(' + translate + 'px)'});
     };
 
     SpinningText.prototype.getPosition = function() {
